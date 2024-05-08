@@ -2,4 +2,5 @@
 
 int main() {
     Shell moon;
+    return 0;
 }
