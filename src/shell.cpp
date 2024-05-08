@@ -1,18 +1,18 @@
 #include <iostream>
-#include <string>
 #include "shell.hpp"
-
+#include "command.hpp"
 
 Shell::Shell() {
-    std::string command;
-    std::cout << "Welcome to moon.sh!\n";
+    string command;
+    cout << "Welcome to moon.sh!\n";
     while(true) {
-        std::cout << "moon $ ";
-        std::cin >> command;
+        cout << "moon $ ";
+        cin >> command;
         /* Gracefully exit the shell */
         if (command == "exit") {
             break;
         }
+        Command cmd(command);
     }
 }   
 
