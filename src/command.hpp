@@ -3,10 +3,15 @@
 using namespace std;
 
 class Command {
-private:
+protected:
     vector<string> command_tokens;
-    vector<string> tokenize(string user_input);
 public:
-    Command(string new_command);
+    Command(vector<string> new_tokens);
     ~Command();
+};
+
+class EchoCommand : public Command {
+public:
+    EchoCommand(vector<string> new_tokens) : Command (new_tokens) {};
+    void echo_fn();
 };

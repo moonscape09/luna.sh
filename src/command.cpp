@@ -1,9 +1,8 @@
 #include <iostream>
-#include <sstream>
 #include "command.hpp"
 
-Command::Command(string new_command) {
-    command_tokens = tokenize(new_command);
+Command::Command(vector<string> new_tokens) {
+    command_tokens = new_tokens;
 }
 
 Command::~Command() {
@@ -11,23 +10,14 @@ Command::~Command() {
 }
 
 /**
- * @brief  Tokenizes user input string
- * 
- * This function takes in the user input string and tokenizes by white space.
- * 
- * @param user_input:  string from the standard input stream to tokenize
- * 
- * @return vector of tokens for command parsing
+ * @brief  Echoes out user input
+ *
+ * This function prints out the user input after the "echo" command.
+ *
  */
-vector<string> Command::tokenize(string user_input) {
-    istringstream iss(user_input);
-    vector<string> tokens;
-    string token;
-
-    // extraction operator default delimeter is whitespace
-    while (iss >> token) {
-        tokens.push_back(token);
+void EchoCommand::echo_fn() {
+    for (size_t i = 1; i < command_tokens.size(); i ++) {
+        cout << command_tokens[i] << " ";
     }
-
-    return tokens;
+    cout << "\n";
 }
