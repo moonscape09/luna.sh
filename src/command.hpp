@@ -15,3 +15,9 @@ public:
     EchoCommand(vector<string> new_tokens) : Command (new_tokens) {};
     void echo_fn();
 };
+
+class PwdCommand : public Command {
+public:
+    PwdCommand(vector<string> new_tokens) : Command (new_tokens) {};
+    void pwd_fn();
+};
