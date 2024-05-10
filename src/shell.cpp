@@ -4,7 +4,7 @@
 #include "command.hpp"
 
 Shell::Shell() {
-    cout << "Welcome to moon.sh!\n";
+    cout << "Welcome to luna.sh!\n";
     while(true) {
         cout << "luna $ ";
 
@@ -81,12 +81,14 @@ void Shell::parseUserInput(vector<string> tokens) {
     if (tokens[0] == "echo") {
         EchoCommand echo(tokens);
         echo.echo_fn();
+        cout << "\n";
     } else if (tokens[0] == "pwd") {
         PwdCommand pwd(tokens);
         pwd.pwd_fn();
+    } else if (tokens[0] == "cd") {
+        CdCommand cd(tokens);
+        cd.cd_fn();
     } else {
-        cout << "luna.sh: command not found: " << tokens[0];
+        cout << "luna.sh: command not found: " << tokens[0] << "\n";
     }
-
-    cout << "\n";
 }
