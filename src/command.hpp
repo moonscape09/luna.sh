@@ -33,3 +33,13 @@ public:
     MkDirCommand(vector<string> new_tokens) : Command (new_tokens) {};
     void mkdir_fn();
 };
+
+class RmCommand : public Command {
+private:
+    bool is_rmdir;
+public:
+    RmCommand(vector<string> new_tokens) : Command (new_tokens) {
+        is_rmdir = new_tokens[0] == "rmdir" ? true : false;
+    };
+    void rm_fn();
+};
