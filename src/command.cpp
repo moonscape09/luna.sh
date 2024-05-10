@@ -58,7 +58,7 @@ void CdCommand::cd_fn() {
 
    // case 2: too many arguments passed in
    } else if (command_tokens.size() > 2) {
-        cout << "cd: Too many arguments, only write one directory!";
+        cout << "cd: Too many arguments, only write one directory!" << "\n";
 
    // case 3: absolute and relative paths
    } else {
