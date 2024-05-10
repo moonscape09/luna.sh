@@ -21,3 +21,9 @@ public:
     PwdCommand(vector<string> new_tokens) : Command (new_tokens) {};
     void pwd_fn();
 };
+
+class CdCommand : public Command {
+public:
+    CdCommand(vector<string> new_tokens) : Command (new_tokens) {};
+    void cd_fn();
+};
