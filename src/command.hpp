@@ -27,3 +27,9 @@ public:
     CdCommand(vector<string> new_tokens) : Command (new_tokens) {};
     void cd_fn();
 };
+
+class MkDirCommand : public Command {
+public:
+    MkDirCommand(vector<string> new_tokens) : Command (new_tokens) {};
+    void mkdir_fn();
+};

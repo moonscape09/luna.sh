@@ -88,6 +88,9 @@ void Shell::parseUserInput(vector<string> tokens) {
     } else if (tokens[0] == "cd") {
         CdCommand cd(tokens);
         cd.cd_fn();
+    } else if (tokens[0] == "mkdir") {
+        MkDirCommand mkdir(tokens);
+        mkdir.mkdir_fn();
     } else {
         cout << "luna.sh: command not found: " << tokens[0] << "\n";
     }
