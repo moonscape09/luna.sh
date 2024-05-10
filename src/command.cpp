@@ -75,3 +75,25 @@ void CdCommand::cd_fn() {
    }
 
 }
+
+/**
+ * @brief Create a directory with name argument
+ *
+ * This function creates a directory named as user input after command.
+ *
+ */
+void MkDirCommand::mkdir_fn() {
+    if (command_tokens.size() == 1) {
+        cout << "mkdir: Please provide a directory name." << "\n";
+    } else {
+        for (size_t i = 1; i < command_tokens.size(); i ++) {
+            fs::path path_to_new_dir = fs::current_path().append(command_tokens[i]);
+            if (fs::exists(path_to_new_dir)) {
+                cout << "mkdir: " << command_tokens[i] << " already exists!" << "\n";
+            } else {
+                fs::create_directory(path_to_new_dir);
+            }
+        }
+    }
+
+}
