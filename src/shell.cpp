@@ -44,11 +44,11 @@ vector<string> Shell::tokenize() {
         tokens.push_back(token);
     }
 
-
+    size_t tokens_length = tokens.size();
     // if echo command used, text enclosed in quotations is treated as one token
-    if (tokens[0] == "echo" && tokens[1][0] == '"') {
+    if (tokens[0] == "echo" && tokens_length > 1 && tokens[1][0] == '"') {
         //second is an edge case for when user goes to new line right after first quotation
-        while (tokens[tokens.size() - 1].back() != '"' || tokens[1].size() == 1){
+        while (tokens[tokens_length - 1].back() != '"' || tokens[1].size() == 1){
             cout << ":( > ";
             string additional;
             getline(cin, additional);
@@ -81,5 +81,12 @@ void Shell::parseUserInput(vector<string> tokens) {
     if (tokens[0] == "echo") {
         EchoCommand echo(tokens);
         echo.echo_fn();
+    } else if (tokens[0] == "pwd") {
+        PwdCommand pwd(tokens);
+        pwd.pwd_fn();
+    } else {
+        cout << "luna.sh: command not found: " << tokens[0];
     }
+
+    cout << "\n";
 }
