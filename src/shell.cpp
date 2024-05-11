@@ -78,22 +78,26 @@ vector<string> Shell::tokenize() {
  * @return vector of tokens for command parsing
  */
 void Shell::parseUserInput(vector<string> tokens) {
-    if (tokens[0] == "echo") {
+    string command = tokens[0];
+    if (command == "echo") {
         EchoCommand echo(tokens);
         echo.echo_fn();
         cout << "\n";
-    } else if (tokens[0] == "pwd") {
+    } else if (command == "pwd") {
         PwdCommand pwd(tokens);
         pwd.pwd_fn();
-    } else if (tokens[0] == "cd") {
+    } else if (command == "cd") {
         CdCommand cd(tokens);
         cd.cd_fn();
-    } else if (tokens[0] == "mkdir") {
+    } else if (command == "mkdir") {
         MkDirCommand mkdir(tokens);
         mkdir.mkdir_fn();
-    } else if (tokens[0] == "rm" || tokens[0] == "rmdir") {
+    } else if (command == "rm" || tokens[0] == "rmdir") {
         RmCommand rm(tokens);
         rm.rm_fn();
+    } else if (command == "ls") {
+        LsCommand ls(tokens);
+        ls.ls_fn();
     } else {
         cout << "luna.sh: command not found: " << tokens[0] << "\n";
     }
