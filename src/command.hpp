@@ -5,6 +5,7 @@ using namespace std;
 class Command {
 protected:
     vector<string> command_tokens;
+    size_t num_tokens;
 public:
     Command(vector<string> new_tokens);
     ~Command();
@@ -42,4 +43,10 @@ public:
         is_rmdir = new_tokens[0] == "rmdir" ? true : false;
     };
     void rm_fn();
+};
+
+class LsCommand : public Command {
+public:
+    LsCommand(vector<string> new_tokens) : Command (new_tokens) {};
+    void ls_fn();
 };
