@@ -216,6 +216,9 @@ void LsCommand::ls_fn() {
         return;
     }
 
+    string list_of_items = ls_fn_helper(fs::current_path());
+
     // if input is just `ls` then call helper to simply list all the contents of current directory
-    cout << ls_fn_helper(fs::current_path()) << "\n";
+    cout << list_of_items
+        << (list_of_items == "" ? "" : "\n"); // case to not have newline on empty output
 }
