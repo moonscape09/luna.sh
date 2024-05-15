@@ -50,3 +50,9 @@ public:
     LsCommand(vector<string> new_tokens) : Command (new_tokens) {};
     void ls_fn();
 };
+
+class MvCommand : public Command {
+public:
+    MvCommand(vector<string> new_tokens) : Command (new_tokens) {};
+    void mv_fn();
+};
