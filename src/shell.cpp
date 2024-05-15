@@ -101,7 +101,11 @@ void Shell::parseUserInput(vector<string> tokens) {
     } else if (command == "mv") {
         MvCommand mv(tokens);
         mv.mv_fn();    
-    } else {
+    } else if (command == "cat") {
+        CatCommand cat(tokens);
+        cat.cat_fn();
+    }
+    else {
         cout << "luna.sh: command not found: " << tokens[0] << "\n";
     }
 }

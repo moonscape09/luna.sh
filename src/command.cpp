@@ -1,6 +1,7 @@
 #include <iostream>
 #include <filesystem>
 #include <cstdlib>
+#include <fstream>
 #include "command.hpp"
 namespace fs = filesystem;
 
@@ -279,4 +280,30 @@ void MvCommand::mv_fn() {
     }
 
     fs::rename(path_to_source / command_tokens[1], path_to_target);
+}
+
+void CatCommand::cat_fn() {
+    if (num_tokens <= 1) {
+        cout << "cat: Not supported yet.\n";
+        return;
+    }
+    for (size_t i = 1; i < num_tokens; i++) {
+        if (!fs::exists(fs::current_path() / command_tokens[i])) {
+            cout << "cat: No such file: " << command_tokens[i] << "\n";
+            continue;
+        }
+
+        if (fs::is_directory(fs::current_path() / command_tokens[i])) {
+            cout << "cat: " << command_tokens[i] << " is a directory" << "\n";
+            continue;
+        }
+
+        cout << command_tokens[i] << ": \n\n";
+        string file_contents;
+        ifstream curr_file(command_tokens[i]);
+        while (getline(curr_file, file_contents)) {
+            cout << file_contents << "\n";
+        }
+        cout << "\n";
+    }
 }
