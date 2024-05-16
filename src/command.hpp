@@ -56,3 +56,9 @@ public:
     MvCommand(vector<string> new_tokens) : Command (new_tokens) {};
     void mv_fn();
 };
+
+class CatCommand : public Command {
+public:
+    CatCommand(vector<string> new_tokens) : Command (new_tokens) {};
+    void cat_fn();
+};
