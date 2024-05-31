@@ -23,7 +23,7 @@ Command::~Command() {
 void EchoCommand::echo_fn() {
     if (num_tokens > 1) {
         for (size_t i = 1; i < num_tokens; i ++) {
-            cout << command_tokens[i] << " ";
+            result = result + command_tokens[i] + " ";
         }
     }
 }
@@ -36,12 +36,12 @@ void EchoCommand::echo_fn() {
  */
 void PwdCommand::pwd_fn() {
     if (num_tokens > 1) {
-        cout << "pwd: Only write pwd!" << "\n";
+        result = "pwd: Only write pwd!\n";
         return;
     }
     string fullpath = fs::current_path();
     size_t first_quotation = fullpath.find("\"");
-    cout << fullpath.substr(first_quotation + 1, fullpath.size() - first_quotation - 1) << "\n";
+    result = fullpath.substr(first_quotation + 1, fullpath.size() - first_quotation - 1) + "\n";
 }
 
 /**
@@ -59,7 +59,7 @@ void CdCommand::cd_fn() {
         return;
    // case 2: too many arguments passed in
    } else if (num_tokens > 2) {
-        cout << "cd: Too many arguments, only write one directory!" << "\n";
+        result = "cd: Too many arguments, only write one directory!\n";
         return;
    // case 3: absolute and relative paths
     }
@@ -68,9 +68,9 @@ void CdCommand::cd_fn() {
     } catch (exception& e) {
         string error = e.what();
         if (error.find("Not a directory") != string::npos) {
-            cout << "cd: Not a directory: " << command_tokens[1] << "\n";
+            result = "cd: Not a directory: " + command_tokens[1] + "\n";
         } else if (error.find("No such file or directory") != string::npos) {
-            cout << "cd: No such file or directory: " << command_tokens[1] << "\n";
+            result = "cd: No such file or directory: " + command_tokens[1] + "\n";
         }
     }
 }
@@ -85,13 +85,13 @@ void CdCommand::cd_fn() {
  */
 void MkDirCommand::mkdir_fn() {
     if (num_tokens == 1) {
-        cout << "mkdir: Please provide a directory name." << "\n";
+        result = "mkdir: Please provide a directory name.\n";
         return;
     }
     for (size_t i = 1; i < num_tokens; i ++) {
         fs::path path_to_new_dir = fs::current_path().append(command_tokens[i]);
         if (fs::exists(path_to_new_dir)) {
-            cout << "mkdir: " << command_tokens[i] << " already exists!" << "\n";
+            result = "mkdir: " + command_tokens[i] + " already exists!" + "\n";
             return;
         }
         fs::create_directory(path_to_new_dir);
@@ -109,7 +109,7 @@ void RmCommand::rm_fn() {
     string item_type = is_rmdir ? "directory" : "file";
 
     if (num_tokens == 1) {
-        cout << command_tokens[0] << ": Please specify a " << item_type << "\n";
+        result = command_tokens[0] + ": Please specify a " + item_type + "\n";
         return;
     }
     for (size_t i = 1; i < num_tokens; i ++) {
@@ -117,20 +117,20 @@ void RmCommand::rm_fn() {
         fs::path item_to_remove = fs::current_path().append(command_tokens[i]);
 
         if (!fs::exists(item_to_remove)) {
-            cout << command_tokens[0] << ": " << item_type << " doesn't exist!" << "\n";
+            result = command_tokens[0] + ": " + item_type + " doesn't exist!" + "\n";
             return;
         } else if (command_tokens[i] == ".") {
-            cout << command_tokens[0] << ": " << "Invalid argument" << "\n";
+            result = command_tokens[0] + ": " + "Invalid argument" + "\n";
             return;
         }
 
         try {
 
             if (!is_rmdir && fs::is_directory(item_to_remove)) {
-                cout << command_tokens[0] << ": " << command_tokens[i] << " is a directory" << "\n";
+                result = command_tokens[0] + ": " + command_tokens[i] + " is a directory" + "\n";
                 return;
             } else if (is_rmdir && !fs::is_directory(item_to_remove)) {
-                cout << command_tokens[0]  << ": " << command_tokens[i] << " is not a directory" << "\n";
+                result = command_tokens[0] + ": " + command_tokens[i] + " is not a directory" + "\n";
                 return;
             }
 
@@ -140,7 +140,7 @@ void RmCommand::rm_fn() {
             string errormsg = e.what();
 
             if (errormsg.find("Directory not empty") != string::npos) {
-                cout << "rmdir: Directory not empty: " << command_tokens[1] << "\n";
+                result = "rmdir: Directory not empty: " + command_tokens[1] + "\n";
             }
         }
     }
@@ -190,7 +190,7 @@ void LsCommand::ls_fn() {
 
             // check if path to item exists
             if (!fs::exists(item_to_list)) {
-                cout << "ls: No such file or directory: " << command_tokens[i] << "\n";
+                result = result + "ls: No such file or directory: " + command_tokens[i] + "\n";
                 continue;
             }
 
@@ -203,8 +203,8 @@ void LsCommand::ls_fn() {
         }
 
         // print files first
-        cout << files_string << (files_string != "" ? "\n" : ""); // case: "ls file1 file2" output should be terminated by newline
-        cout << (files_string != "" && directories_string != "" ? "\n" : ""); // case: "ls file1 file2 dir1" output should have newline between dir and files
+        result = result + files_string + (files_string != "" ? "\n" : ""); // case: "ls file1 file2" output should be terminated by newline
+        result = result + (files_string != "" && directories_string != "" ? "\n" : ""); // case: "ls file1 file2 dir1" output should have newline between dir and files
 
         // lists of multiple directories' contents are seperated by two newlines so remove the second newline after the last directory's contents
         if (num_tokens > 2) {
@@ -212,7 +212,7 @@ void LsCommand::ls_fn() {
         }
 
         // then print directories
-        cout << directories_string;
+        result = result + directories_string;
 
         return;
     }
@@ -220,8 +220,7 @@ void LsCommand::ls_fn() {
     string list_of_items = ls_fn_helper(fs::current_path());
 
     // if input is just `ls` then call helper to simply list all the contents of current directory
-    cout << list_of_items
-        << (list_of_items == "" ? "" : "\n");;
+    result = result + list_of_items + (list_of_items == "" ? "" : "\n");
 }
 
 
@@ -237,7 +236,7 @@ void MvCommand::mv_fn() {
 
     // user has to specify a source and a target
     if (num_tokens <= 2) {
-        cout << "mv: " << "Please provide a source and target!" << "\n";
+        result = "mv: Please provide a source and target!\n";
         return;
     }
 
@@ -253,7 +252,7 @@ void MvCommand::mv_fn() {
 
             // if current iterable source doesn't exist, move on to next item
             if (!fs::exists(source)) {
-                cout << "mv: No such file or directory: " << command_tokens[i] << "\n";
+                result = result + "mv: No such file or directory: " + command_tokens[i] + "\n";
                 continue;
             }
             fs::rename(source, path_to_target / command_tokens[i]);
@@ -263,19 +262,19 @@ void MvCommand::mv_fn() {
 
     // when three or more files/dirs are given, the target should be perceived as a directory
     if (num_tokens > 3) {
-        cout << "mv: " << target << " is not a directory" << "\n";
+        result = "mv: " + target + " is not a directory\n";
         return;
     }
 
     // if source doesn't exist
     if (!fs::exists(path_to_source / command_tokens[1])) {
-        cout << "mv: No such file or directory: " + command_tokens[1] << "\n";
+        result = "mv: No such file or directory " + command_tokens[1] + "\n";
         return;
     }
 
     // edge case: when user attempts to move directory to a file
     if (fs::is_directory(path_to_source / command_tokens[1]) && fs::is_regular_file(path_to_target)) {
-        cout << "mv: " << "cannot rename a directory to name of an existing file: " << target << "\n";
+        result = "mv: cannot rename a directory to name of an existing file: " + target + "\n";
         return;
     }
 
@@ -284,26 +283,26 @@ void MvCommand::mv_fn() {
 
 void CatCommand::cat_fn() {
     if (num_tokens <= 1) {
-        cout << "cat: Not supported yet.\n";
+        result = "cat: Not supported yet.\n";
         return;
     }
     for (size_t i = 1; i < num_tokens; i++) {
         if (!fs::exists(fs::current_path() / command_tokens[i])) {
-            cout << "cat: No such file: " << command_tokens[i] << "\n";
+            result = result + "cat: No such file: " + command_tokens[i] + "\n";
             continue;
         }
 
         if (fs::is_directory(fs::current_path() / command_tokens[i])) {
-            cout << "cat: " << command_tokens[i] << " is a directory" << "\n";
+            result = result + "cat: " + command_tokens[i] + " is a directory\n";
             continue;
         }
 
-        cout << command_tokens[i] << ": \n\n";
+        result = result + command_tokens[i] + ": \n\n";
         string file_contents;
         ifstream curr_file(command_tokens[i]);
         while (getline(curr_file, file_contents)) {
-            cout << file_contents << "\n";
+            result = result + file_contents + "\n";
         }
-        cout << "\n";
+        result = result + "\n";
     }
 }

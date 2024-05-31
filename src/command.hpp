@@ -7,6 +7,7 @@ protected:
     vector<string> command_tokens;
     size_t num_tokens;
 public:
+    string result;
     Command(vector<string> new_tokens);
     ~Command();
 };
