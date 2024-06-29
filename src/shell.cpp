@@ -82,28 +82,36 @@ void Shell::parseUserInput(vector<string> tokens) {
     if (command == "echo") {
         EchoCommand echo(tokens);
         echo.echo_fn();
+        cout << echo.result;
         cout << "\n";
     } else if (command == "pwd") {
         PwdCommand pwd(tokens);
         pwd.pwd_fn();
+        cout << pwd.result;
     } else if (command == "cd") {
         CdCommand cd(tokens);
         cd.cd_fn();
+        cout << cd.result;
     } else if (command == "mkdir") {
         MkDirCommand mkdir(tokens);
         mkdir.mkdir_fn();
+        cout << mkdir.result;
     } else if (command == "rm" || tokens[0] == "rmdir") {
         RmCommand rm(tokens);
         rm.rm_fn();
+        cout << rm.result;
     } else if (command == "ls") {
         LsCommand ls(tokens);
         ls.ls_fn();
+        cout << ls.result;
     } else if (command == "mv") {
         MvCommand mv(tokens);
-        mv.mv_fn();    
+        mv.mv_fn();
+        cout << mv.result;
     } else if (command == "cat") {
         CatCommand cat(tokens);
         cat.cat_fn();
+        cout << cat.result;
     }
     else {
         cout << "luna.sh: command not found: " << tokens[0] << "\n";
