@@ -281,6 +281,14 @@ void MvCommand::mv_fn() {
     fs::rename(path_to_source / command_tokens[1], path_to_target);
 }
 
+/**
+ * @brief Display contents of a file.
+ *
+ * This function handles user input for the `cat` command. It is used 
+ * to list contents of the file arguments.
+ *
+ */
+
 void CatCommand::cat_fn() {
     if (num_tokens <= 1) {
         result = "cat: Not supported yet.\n";
