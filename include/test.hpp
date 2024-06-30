@@ -1,4 +1,3 @@
-#include "../src/command.hpp"
 class Test {
 protected:
     void assert_command(const string& expected, const string& actual, const string& test_name);

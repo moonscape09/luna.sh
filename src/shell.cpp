@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
-#include "shell.hpp"
-#include "command.hpp"
+#include "../include/shell.hpp"
+#include "../include/command.hpp"
 
 Shell::Shell() {
     cout << "Welcome to luna.sh!" << endl;

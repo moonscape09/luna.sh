@@ -4,8 +4,9 @@ fi
 mkdir build
 cp -r src build/src
 cp -r tests build/tests
+cp -r include build/include
 cd build/src
-g++ -std=c++20 luna.cpp shell.cpp command.cpp ../tests/test.cpp -o luna.sh
+g++ -std=c++20 *.cpp ../tests/test.cpp commands/*cpp -o luna.sh
 if [[ $1 = "--testing" ]]; then
     export "LUNA_TESTING_ON"=
     echo "Hello world\n" >> ../cat_testing.txt
