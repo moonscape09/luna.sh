@@ -1,13 +1,13 @@
 #include <iostream>
-#include <filesystem>
 #include <cstdlib>
 #include <fstream>
 #include "command.hpp"
-namespace fs = filesystem;
 
 Command::Command(const vector<string>& new_tokens) {
     command_tokens = new_tokens;
     num_tokens = new_tokens.size();
+    current_path = fs::current_path();
+    current_path += "/"; // directory suffix
 }
 
 Command::~Command() {
@@ -39,9 +39,8 @@ void PwdCommand::pwd_fn() {
         result = "pwd: Only write pwd!\n";
         return;
     }
-    string fullpath = fs::current_path();
-    size_t first_quotation = fullpath.find("\"");
-    result = fullpath.substr(first_quotation + 1, fullpath.size() - first_quotation - 1) + "\n";
+    size_t first_quotation = current_path.find("\"");
+    result = current_path.substr(first_quotation + 1, current_path.size() - first_quotation - 1) + "\n";
 }
 
 /**
@@ -54,7 +53,6 @@ void CdCommand::cd_fn() {
 
    // case 1: home directory
    if (num_tokens == 1 || command_tokens[1] == "~") {
-        fs::path p = fs::current_path();
         fs::current_path(getenv("HOME"));
         return;
    // case 2: too many arguments passed in
@@ -89,7 +87,7 @@ void MkDirCommand::mkdir_fn() {
         return;
     }
     for (size_t i = 1; i < num_tokens; i ++) {
-        fs::path path_to_new_dir = fs::current_path().append(command_tokens[i]);
+        fs::path path_to_new_dir = current_path + command_tokens[i];
         if (fs::exists(path_to_new_dir)) {
             result = "mkdir: " + command_tokens[i] + " already exists!" + "\n";
             return;
@@ -114,7 +112,7 @@ void RmCommand::rm_fn() {
     }
     for (size_t i = 1; i < num_tokens; i ++) {
 
-        fs::path item_to_remove = fs::current_path().append(command_tokens[i]);
+        fs::path item_to_remove = current_path + command_tokens[i];
 
         if (!fs::exists(item_to_remove)) {
             result = command_tokens[0] + ": " + item_type + " doesn't exist!" + "\n";
@@ -158,7 +156,7 @@ void RmCommand::rm_fn() {
  * @return a string that lists relative paths to the items living in the directory arg
  */
 
-string ls_fn_helper(string curr_path) {
+string ls_fn_helper(const string& curr_path) {
     string list_of_items = "";
     for (fs::directory_entry dir : fs::directory_iterator(curr_path)) {
         string item = dir.path();
@@ -186,7 +184,7 @@ void LsCommand::ls_fn() {
         for (size_t i = 1; i < num_tokens; i++) {
 
             // get path of current iterable item
-            fs::path item_to_list = fs::current_path().append(command_tokens[i]);
+            fs::path item_to_list = current_path + command_tokens[i];
 
             // check if path to item exists
             if (!fs::exists(item_to_list)) {
@@ -217,7 +215,7 @@ void LsCommand::ls_fn() {
         return;
     }
 
-    string list_of_items = ls_fn_helper(fs::current_path());
+    string list_of_items = ls_fn_helper(current_path);
 
     // if input is just `ls` then call helper to simply list all the contents of current directory
     result = result + list_of_items + (list_of_items == "" ? "" : "\n");
@@ -241,9 +239,9 @@ void MvCommand::mv_fn() {
     }
 
     string target = command_tokens[num_tokens - 1];
-    fs::path path_to_target = fs::current_path() / target;
+    fs::path path_to_target = current_path + target;
 
-    fs::path path_to_source = fs::current_path();
+    fs::path path_to_source = current_path;
 
     if (fs::is_directory(path_to_target)) {
         //iterate over all the sources and move them to target destination
@@ -295,12 +293,13 @@ void CatCommand::cat_fn() {
         return;
     }
     for (size_t i = 1; i < num_tokens; i++) {
-        if (!fs::exists(fs::current_path() / command_tokens[i])) {
+        fs::path item_to_cat = current_path + command_tokens[i];
+        if (!fs::exists(item_to_cat)) {
             result = result + "cat: No such file: " + command_tokens[i] + "\n";
             continue;
         }
 
-        if (fs::is_directory(fs::current_path() / command_tokens[i])) {
+        if (fs::is_directory(item_to_cat)) {
             result = result + "cat: " + command_tokens[i] + " is a directory\n";
             continue;
         }

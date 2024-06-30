@@ -1,11 +1,14 @@
 #include <string>
 #include <vector>
+#include <filesystem>
 using namespace std;
+namespace fs = filesystem;
 
 class Command {
 protected:
     vector<string> command_tokens;
     size_t num_tokens;
+    string current_path;
 public:
     string result;
     Command(const vector<string>& new_tokens);
