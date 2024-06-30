@@ -5,7 +5,7 @@
 #include "command.hpp"
 namespace fs = filesystem;
 
-Command::Command(vector<string> new_tokens) {
+Command::Command(const vector<string>& new_tokens) {
     command_tokens = new_tokens;
     num_tokens = new_tokens.size();
 }
@@ -284,7 +284,7 @@ void MvCommand::mv_fn() {
 /**
  * @brief Display contents of a file.
  *
- * This function handles user input for the `cat` command. It is used 
+ * This function handles user input for the `cat` command. It is used
  * to list contents of the file arguments.
  *
  */
