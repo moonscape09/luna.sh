@@ -5,7 +5,7 @@
 namespace fs = filesystem;
 using namespace std;
 
-void Test::assert_command(string expected, string actual, string test_name) {
+void Test::assert_command(const string& expected, const string& actual, const string& test_name) {
     if (expected.compare(actual) == 0) number_of_tests_passed ++;
     else cout << test_name + ": failed\nExpected: " + expected + "\nActual: " + actual << endl;
 }

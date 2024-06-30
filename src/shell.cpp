@@ -4,7 +4,7 @@
 #include "command.hpp"
 
 Shell::Shell() {
-    cout << "Welcome to luna.sh!\n";
+    cout << "Welcome to luna.sh!" << endl;
     while(true) {
         cout << "luna $ ";
 
@@ -77,13 +77,12 @@ vector<string> Shell::tokenize() {
  *
  * @return vector of tokens for command parsing
  */
-void Shell::parseUserInput(vector<string> tokens) {
+void Shell::parseUserInput(const vector<string>& tokens) {
     string command = tokens[0];
     if (command == "echo") {
         EchoCommand echo(tokens);
         echo.echo_fn();
-        cout << echo.result;
-        cout << "\n";
+        cout << echo.result << endl;
     } else if (command == "pwd") {
         PwdCommand pwd(tokens);
         pwd.pwd_fn();
@@ -114,6 +113,6 @@ void Shell::parseUserInput(vector<string> tokens) {
         cout << cat.result;
     }
     else {
-        cout << "luna.sh: command not found: " << tokens[0] << "\n";
+        cout << "luna.sh: command not found: " << tokens[0] << endl;
     }
 }
