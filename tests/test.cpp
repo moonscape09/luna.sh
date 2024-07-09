@@ -158,7 +158,7 @@ Test::Test() {
     // basic ls: `ls`
     LsCommand test_ls({"ls"});
     test_ls.ls_fn();
-    assert_command("luna.cpp    luna.sh    mv_test_dir    commands    shell.cpp    \n", test_ls.result, "basic ls");
+    assert_command("command-history.cpp    luna.cpp    luna.sh    mv_test_dir    commands    shell.cpp    \n", test_ls.result, "basic ls");
 
     // ls on file: `ls luna.cpp`
     test_ls = LsCommand({"ls", "luna.cpp"});
@@ -168,18 +168,18 @@ Test::Test() {
     // ls on explicit directory: `ls ../tests`
     test_ls = LsCommand({"ls", "../include"});
     test_ls.ls_fn();
-    assert_command("../include/: \nshell.hpp    test.hpp    command.hpp    \n", test_ls.result, "ls on directory");
+    assert_command("../include/: \nshell.hpp    test.hpp    command.hpp    command-history.hpp    \n", test_ls.result, "ls on directory");
 
     // ls on multiple directories: `ls ../tests .`
     test_ls = LsCommand({"ls", "../include", "."});
     test_ls.ls_fn();
-    assert_command("../include/: \nshell.hpp    test.hpp    command.hpp    \n\n./: \nluna.cpp    luna.sh    mv_test_dir    commands    shell.cpp    \n",
+    assert_command("../include/: \nshell.hpp    test.hpp    command.hpp    command-history.hpp    \n\n./: \ncommand-history.cpp    luna.cpp    luna.sh    mv_test_dir    commands    shell.cpp    \n",
                         test_ls.result, "ls on directories");
 
     // ls on files and directories: `ls luna.cpp ../tests . luna.sh`
     test_ls = LsCommand({"ls", "luna.cpp", "../include", ".", "luna.sh"});
     test_ls.ls_fn();
-    assert_command("luna.cpp    luna.sh    \n\n../include/: \nshell.hpp    test.hpp    command.hpp    \n\n./: \nluna.cpp    luna.sh    mv_test_dir    commands    shell.cpp    \n",
+    assert_command("luna.cpp    luna.sh    \n\n../include/: \nshell.hpp    test.hpp    command.hpp    command-history.hpp    \n\n./: \ncommand-history.cpp    luna.cpp    luna.sh    mv_test_dir    commands    shell.cpp    \n",
                         test_ls.result, "ls on files and directories");
 
     // ls on nonexistent item: `ls nonexistent`
@@ -190,7 +190,7 @@ Test::Test() {
     // ls on nonexistent and existent item without termination: `ls nonexistent ../tests`
     test_ls = LsCommand({"ls", "nonexistent", "../include"});
     test_ls.ls_fn();
-    assert_command("ls: No such file or directory: nonexistent\n../include/: \nshell.hpp    test.hpp    command.hpp    \n",
+    assert_command("ls: No such file or directory: nonexistent\n../include/: \nshell.hpp    test.hpp    command.hpp    command-history.hpp    \n",
                         test_ls.result, "ls on nonexistent and existent items without termination");
 
     /* Mv tests */
