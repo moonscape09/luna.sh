@@ -6,10 +6,10 @@ namespace fs = filesystem;
 
 class Command {
 protected:
-    vector<string> command_tokens;
-    size_t num_tokens;
     string current_path;
+    size_t num_tokens;
 public:
+    vector<string> command_tokens;
     string result;
     Command(const vector<string>& new_tokens);
     ~Command();
