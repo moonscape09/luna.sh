@@ -1,0 +1,5 @@
+name: luna-env
+channels:
+  - defaults
+dependencies:
+  - readline
