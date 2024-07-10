@@ -6,9 +6,9 @@ Welcome to `luna.sh` 🌙. A shell I am building as I learn C++. Stay tuned!
 
 ## Setup Instructions:
 1. Create the Conda environment from `luna-environment.yml`:
-   ```bash
-   conda env create -f luna-environment.yml
-   ```
+  ```bash
+  conda env create -f luna-environment.yml
+  ```
 2. Activate the Conda environment
   ```bash
   conda activate luna-env
