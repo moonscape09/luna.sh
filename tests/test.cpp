@@ -248,7 +248,7 @@ Test::Test() {
     // cat on file: `cat ../cat_testing.txt`
     test_cat = CatCommand({"cat", "../cat_testing.txt"});
     test_cat.cat_fn();
-    assert_command("../cat_testing.txt: \n\nHello world\n\n\n", test_cat.result, "cat on a file");
+    assert_command("../cat_testing.txt: \n\nHello world\n\n", test_cat.result, "cat on a file");
 
     cout << number_of_tests_passed << "/40 passed" << endl;
 }
