@@ -20,8 +20,6 @@ int Shell::down_arrow_key_function(int count, int key) {
 }
 
 Shell::Shell() {
-    cout << "Welcome to luna.sh!" << endl;
-
     // up and down arrow key bindings
     rl_bind_keyseq("\033[A", up_arrow_key_function);
     rl_bind_keyseq("\033[B", down_arrow_key_function);
