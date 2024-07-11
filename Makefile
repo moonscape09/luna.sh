@@ -29,6 +29,7 @@ build:
 ${BUILDDIR}/luna.sh:
 	@echo "Compiling..."
 	@${COMPILE} $(shell find build -name '*.cpp') -o $@ ${LINKERFLAG} ${LDFLAGS} ${CPPFLAGS}
+	@echo "Executable ready. To execute, do: make luna"
 
 # Ensure build is executed before attempting to build luna.sh
 luna.sh: build ${BUILDDIR}/luna.sh
