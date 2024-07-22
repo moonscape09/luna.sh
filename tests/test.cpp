@@ -250,7 +250,42 @@ Test::Test() {
     test_cat.cat_fn();
     assert_command("../cat_testing.txt: \n\nHello world\n\n", test_cat.result, "cat on a file");
 
-    cout << number_of_tests_passed << "/40 passed" << endl;
+    WcCommand test_wc({"wc"});
+    assert_command("wc: Not supported yet\n", test_wc.result, "empty wc");
+
+    test_wc = WcCommand({"wc", "command-history.cpp"});
+    assert_command("	144	597	4412 command-history.cpp\n", test_wc.result, "wc on a file");
+
+    test_wc = WcCommand({"wc", "command-history.cpp", "../tests/luna.cpp"});
+    assert_command("	144	597	4412 command-history.cpp\n	11	26	221 ../tests/luna.cpp\n	155	623	4633 total\n",
+        test_wc.result, "wc on multiple files");
+
+    test_wc = WcCommand({"wc", "../mv_test_dir"});
+    assert_command("wc: ../mv_test_dir is a directory.\n", test_wc.result, "wc on a directory");
+
+    test_wc = WcCommand({"wc", "non-existent"});
+    assert_command("wc: non-existent: No such file or directory.\n", test_wc.result, "wc on a non-existent item");
+
+    test_wc = WcCommand({"wc", "-l", "command-history.cpp", "../tests/luna.cpp"});
+    assert_command("	144 command-history.cpp\n	11 ../tests/luna.cpp\n	155 total\n",
+        test_wc.result, "wc with -l option");
+
+    test_wc = WcCommand({"wc", "-w", "command-history.cpp", "../tests/luna.cpp"});
+    assert_command("	597 command-history.cpp\n	26 ../tests/luna.cpp\n	623 total\n",
+        test_wc.result, "wc with -w option");
+
+    test_wc = WcCommand({"wc", "-c", "command-history.cpp", "../tests/luna.cpp"});
+    assert_command("	4412 command-history.cpp\n	221 ../tests/luna.cpp\n	4633 total\n",
+        test_wc.result, "wc with -c option");
+
+    test_wc = WcCommand({"wc", "-l", "-w", "command-history.cpp", "../tests/luna.cpp"});
+    assert_command("	144	597 command-history.cpp\n	11	26 ../tests/luna.cpp\n	155	623 total\n",
+        test_wc.result, "wc with multiple options");
+
+    test_wc = WcCommand({"wc", "-lc", "command-history.cpp", "../tests/luna.cpp"});
+    assert_command("	144	4412 command-history.cpp\n	11	221 ../tests/luna.cpp\n	155	4633 total\n",
+        test_wc.result, "wc with multiple options defined together under one '-' ");
+    cout << number_of_tests_passed << "/50 passed" << endl;
 }
 
 Test::~Test() {};

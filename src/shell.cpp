@@ -143,6 +143,10 @@ void Shell::parseUserInput(const vector<string>& tokens) {
         cat.cat_fn();
         command_history.insert_command(cat);
         cout << cat.result;
+    } else if (command == "wc") {
+        WcCommand wc(tokens);
+        command_history.insert_command(wc);
+        cout << wc.result;
     } else {
         cout << "luna.sh: command not found: " << tokens[0] << endl;
     }

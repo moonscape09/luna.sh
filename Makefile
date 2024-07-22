@@ -41,7 +41,7 @@ luna: ${BUILDDIR}/luna.sh
 
 # Target for testing
 testing: luna.sh
-	@echo "Running testing..."
+	@echo "Running tests..."
 	@echo "Hello world" >> build/cat_testing.txt
 	@mkdir -p ${BUILDDIR}/mv_test_dir
 	@(cd ${BUILDDIR} && export ${TEST_MODE_ENV} && export DYLD_LIBRARY_PATH=${CONDA_PREFIX}/lib:${DYLD_LIBRARY_PATH} && ./$<)
