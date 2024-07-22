@@ -81,8 +81,8 @@ public:
 
 class WcCommand : public Command {
 private:
-    void append_count_to_result(int current_word_count, int current_line_count, int current_character_count);
+    void append_count_to_result(const int& current_word_count, const int& current_line_count, const int& current_character_count);
+    void wc_fn();
 public:
     WcCommand(const vector<string>& new_tokens);
-    void wc_fn();
 };
