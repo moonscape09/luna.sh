@@ -2,6 +2,7 @@
 Welcome to `luna.sh` 🌙. A shell I am building as I learn C++. Stay tuned!
 
 ## Prerequisites:
+- This application currently supports only macOS.
 - Ensure Conda and Make are installed on your system.
 
 ## Setup Instructions:
