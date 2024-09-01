@@ -93,16 +93,26 @@ vector<string> Shell::tokenize() {
 /**
  * @brief  Parses command and instantiates corresponding object
  *
- * This function takes in the user input tokens and looks at the first command.
- * Afterwards it will instantiate the appropriate Command object and call it's method
- * for the command to execute.
+ * This function takes in the user input tokens, calls variable
+ * handling functions and looks at the first command. Afterwards,
+ * it will instantiate the appropriate Command object and
+ * call it's functionality method for the command to execute.
  *
  * @param tokens: tokenized user input string
  *
  * @return vector of tokens for command parsing
  */
-void Shell::parseUserInput(const vector<string>& tokens) {
+void Shell::parseUserInput(vector<string>& tokens) {
+
+    if (tokens[0].find("=") != string::npos) {
+        variable_constructor(tokens[0]);
+        return;
+    }
+
+    variable_parser(tokens);
+
     string command = tokens[0];
+
     if (command == "echo") {
         EchoCommand echo(tokens);
         echo.echo_fn();
@@ -148,6 +158,45 @@ void Shell::parseUserInput(const vector<string>& tokens) {
         command_history.insert_command(wc);
         cout << wc.result;
     } else {
-        cout << "luna.sh: command not found: " << tokens[0] << endl;
+        cout << "luna.sh: command not found: " << command << endl;
+    }
+}
+
+/**
+ * @brief  Constructs variables.
+ *
+ * This function is called when user creates a new variable. It splits the variable
+ * declaration token on the "=" sign, assigning the variable's name to the prefix
+ * and the variable's value to the suffix. It appends this key-value
+ * pair on `variables_map`.
+ *
+ * @param variable_token: token where variable is declared
+ *
+ */
+void Shell::variable_constructor(const string& variable_token) {
+
+    size_t index_of_equal_sign = variable_token.find("=");
+    string variable_name = variable_token.substr(0, index_of_equal_sign);
+    string variable_value = variable_token.substr(index_of_equal_sign + 1, variable_token.size());
+
+    variables_map[variable_name] = variable_value;
+    cout << "Variable " << variable_name << " set to " << variable_value << endl;
+}
+
+/**
+ * @brief  Parses variables.
+ *
+ * This function parses any variables found in the user's tokenized input string.
+ * A variable is found if "$" sign prefixes it, which once identified, is parsed
+ * to it's true value through lookups on `variables_map`.
+ *
+ * @param tokens: tokenized user input string
+ *
+ */
+void Shell::variable_parser(vector<string>& tokens) {
+    for (string& curr_token : tokens) {
+        if (curr_token[0] == '$') {
+            curr_token = variables_map[curr_token.substr(1)];
+        }
     }
 }
